@@ -39,8 +39,7 @@ func NewCloudAzureTenantResource() resource.Resource {
 }
 
 type cloudAzureTenantResource struct {
-	client   *client.CrowdStrikeAPISpecification
-	clientId string
+	client *client.CrowdStrikeAPISpecification
 }
 
 // Configure adds the provider configured client to the resource.
@@ -68,7 +67,6 @@ func (r *cloudAzureTenantResource) Configure(
 	}
 
 	r.client = config.Client
-	r.clientId = config.ClientId
 }
 
 func (r *cloudAzureTenantResource) Metadata(
@@ -527,8 +525,6 @@ func (r *cloudAzureTenantResource) createRegistration(
 				TenantID:                    data.TenantId.ValueStringPointer(),
 				CsInfraRegion:               data.CsInfraRegion.ValueString(),
 				CsInfraSubscriptionID:       data.CsInfraSubscriptionId.ValueString(),
-				APIClientKeyID:              r.clientId,
-				APIClientKeyType:            "customer",
 				Environment:                 data.Environment.ValueStringPointer(),
 				ResourceNamePrefix:          data.ResourceNamePrefix.ValueStringPointer(),
 				ResourceNameSuffix:          data.ResourceNameSuffix.ValueStringPointer(),
@@ -594,8 +590,6 @@ func (r *cloudAzureTenantResource) updateRegistration(
 				TenantID:              data.TenantId.ValueStringPointer(),
 				CsInfraRegion:         data.CsInfraRegion.ValueString(),
 				CsInfraSubscriptionID: data.CsInfraSubscriptionId.ValueString(),
-				APIClientKeyID:        r.clientId,
-				APIClientKeyType:      "customer",
 				Environment:           data.Environment.ValueStringPointer(),
 				ResourceNamePrefix:    data.ResourceNamePrefix.ValueStringPointer(),
 				ResourceNameSuffix:    data.ResourceNameSuffix.ValueStringPointer(),
