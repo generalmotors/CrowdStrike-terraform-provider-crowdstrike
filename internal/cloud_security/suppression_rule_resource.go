@@ -35,10 +35,12 @@ import (
 )
 
 var (
-	ruleSelectionTypeDefault = "all_rules"
-	ruleSelectionTypeFilter  = "rule_selection_filter"
-	scopeTypeDefault         = "all_assets"
-	scopeTypeFilter          = "asset_filter"
+	ruleSelectionTypeDefault        = "all_rules"
+	ruleSelectionTypeFilter         = "rule_selection_filter"
+	scopeTypeDefault                = "all_assets"
+	scopeTypeFilter                 = "asset_filter"
+	suppressionRuleSubdomainDefault = "IOM"
+	suppressionRuleDomainDefault    = "CSPM"
 )
 
 var (
@@ -241,7 +243,11 @@ func (r *cloudSecuritySuppressionRuleResource) Schema(
 				Description: "Reason for suppression. One of: accept-risk, compensating-control, false-positive.",
 				Required:    true,
 				Validators: []validator.String{
-					stringvalidator.OneOf(suppressionRuleReasonValues...),
+					stringvalidator.OneOf(
+						"accept-risk",
+						"compensating-control",
+						"false-positive",
+					),
 				},
 			},
 			"rule_selection_filter": schema.SingleNestedAttribute{
@@ -282,7 +288,7 @@ func (r *cloudSecuritySuppressionRuleResource) Schema(
 						Optional:            true,
 						Validators: []validator.Set{
 							setvalidator.ValueStringsAre(
-								stringvalidator.OneOf(ruleOriginValues...),
+								stringvalidator.OneOf("Custom", "Default"),
 							),
 							setvalidator.SizeAtLeast(1),
 						},
@@ -315,7 +321,7 @@ func (r *cloudSecuritySuppressionRuleResource) Schema(
 						Optional:            true,
 						Validators: []validator.Set{
 							setvalidator.ValueStringsAre(
-								stringvalidator.OneOf(ruleSeverityValues...),
+								stringvalidator.OneOf("critical", "high", "medium", "informational"),
 							),
 							setvalidator.SizeAtLeast(1),
 						},
@@ -774,7 +780,7 @@ func (r *cloudSecuritySuppressionRuleResource) deleteSuppressionRule(ctx context
 	}
 
 	_, err := r.client.CloudPolicies.DeleteSuppressionRules(&params)
-	diag := tferrors.NewDiagnosticFromAPIError(tferrors.Delete, err, suppressionRuleResourceRequiredScopes)
+	diag := tferrors.NewDiagnosticFromAPIError(tferrors.Update, err, suppressionRuleResourceRequiredScopes)
 	if diag != nil {
 		diags.Append(diag)
 		return diags
