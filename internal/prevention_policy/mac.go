@@ -66,7 +66,6 @@ type preventionPolicyMacResourceModel struct {
 	EmpyreBackdoor                     types.Bool   `tfsdk:"empyre_backdoor"`
 	KcPasswordDecoded                  types.Bool   `tfsdk:"kc_password_decoded"`
 	HashCollector                      types.Bool   `tfsdk:"hash_collector"`
-	EnhancedNetworkVisibility          types.Bool   `tfsdk:"enhanced_network_visibility"`
 }
 
 // Configure adds the provider configured client to the resource.
@@ -539,7 +538,6 @@ func (r *preventionPolicyMacResource) assignPreventionSettings(
 	state.EmpyreBackdoor = defaultBoolFalse(toggleSettings["EmpyreBackdoor"])
 	state.KcPasswordDecoded = defaultBoolFalse(toggleSettings["KcPasswordDecoded"])
 	state.HashCollector = defaultBoolFalse(toggleSettings["HashCollector"])
-	state.EnhancedNetworkVisibility = defaultBoolFalse(toggleSettings["EnhancedNetworkVisibilityMac"])
 
 	// mlslider settings
 	if slider, ok := mlSliderSettings["CloudAntiMalware"]; ok {
@@ -606,7 +604,6 @@ func (r *preventionPolicyMacResource) generatePreventionSettings(
 		"EmpyreBackdoor":                     config.EmpyreBackdoor,
 		"KcPasswordDecoded":                  config.KcPasswordDecoded,
 		"HashCollector":                      config.HashCollector,
-		"EnhancedNetworkVisibilityMac":       config.EnhancedNetworkVisibility,
 	}
 
 	mlSliderSettings := map[string]mlSlider{}

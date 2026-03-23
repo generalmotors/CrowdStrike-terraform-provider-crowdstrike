@@ -540,9 +540,6 @@ func generateMacSchema(defaultPolicy bool) schema.Schema {
 			"prevent_suspicious_processes": toggleAttribute(
 				"Block processes that CrowdStrike analysts classify as suspicious. These are focused on dynamic IOAs, such as malware, exploits and other threats.",
 			),
-			"enhanced_network_visibility": toggleAttribute(
-				"Provides enhanced visibility into network activities and detections.",
-			),
 		},
 	}
 

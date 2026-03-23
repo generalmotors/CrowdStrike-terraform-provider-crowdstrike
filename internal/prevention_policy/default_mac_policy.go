@@ -59,7 +59,6 @@ type defaultPreventionPolicyMacResourceModel struct {
 	EmpyreBackdoor                     types.Bool   `tfsdk:"empyre_backdoor"`
 	KcPasswordDecoded                  types.Bool   `tfsdk:"kc_password_decoded"`
 	HashCollector                      types.Bool   `tfsdk:"hash_collector"`
-	EnhancedNetworkVisibility          types.Bool   `tfsdk:"enhanced_network_visibility"`
 }
 
 // wrap transforms Go values to their terraform wrapped values.
@@ -102,7 +101,6 @@ func (m *defaultPreventionPolicyMacResourceModel) generatePreventionSettings(ctx
 		"EmpyreBackdoor":                     m.EmpyreBackdoor,
 		"KcPasswordDecoded":                  m.KcPasswordDecoded,
 		"HashCollector":                      m.HashCollector,
-		"EnhancedNetworkVisibilityMac":       m.EnhancedNetworkVisibility,
 	}
 
 	mlSliderSettings := map[string]mlSlider{}
@@ -202,7 +200,6 @@ func (m *defaultPreventionPolicyMacResourceModel) assignPreventionSettings(
 	m.EmpyreBackdoor = defaultBoolFalse(toggleSettings["EmpyreBackdoor"])
 	m.KcPasswordDecoded = defaultBoolFalse(toggleSettings["KcPasswordDecoded"])
 	m.HashCollector = defaultBoolFalse(toggleSettings["HashCollector"])
-	m.EnhancedNetworkVisibility = defaultBoolFalse(toggleSettings["EnhancedNetworkVisibilityMac"])
 
 	// mlslider settings
 	if slider, ok := mlSliderSettings["CloudAntiMalware"]; ok {
