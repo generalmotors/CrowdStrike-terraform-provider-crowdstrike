@@ -8,7 +8,6 @@ import (
 	"github.com/crowdstrike/gofalcon/falcon/client"
 	"github.com/crowdstrike/gofalcon/falcon/models"
 	"github.com/crowdstrike/terraform-provider-crowdstrike/internal/config"
-	"github.com/crowdstrike/terraform-provider-crowdstrike/internal/framework/flex"
 	ioarulegroup "github.com/crowdstrike/terraform-provider-crowdstrike/internal/ioa_rule_group"
 	"github.com/crowdstrike/terraform-provider-crowdstrike/internal/utils"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -71,7 +70,9 @@ func (m *defaultPreventionPolicyLinuxResourceModel) wrap(
 ) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	m.Description = flex.StringPointerToFramework(policy.Description)
+	if *policy.Description != "" {
+		m.Description = types.StringValue(*policy.Description)
+	}
 	diags.Append(m.assignPreventionSettings(ctx, policy.PreventionSettings)...)
 	ruleGroupSet, diag := ioarulegroup.ConvertIOARuleGroupToSet(ctx, policy.IoaRuleGroups)
 	diags.Append(diag...)
@@ -312,7 +313,7 @@ func (r *defaultPreventionPolicyLinuxResource) Create(
 		r.client,
 		preventionSettings,
 		plan.ID.ValueString(),
-		updatePreventionPolicyOptions{Description: flex.FrameworkToStringPointer(plan.Description)},
+		updatePreventionPolicyOptions{Description: plan.Description.ValueString()},
 	)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -379,7 +380,7 @@ func (r *defaultPreventionPolicyLinuxResource) Update(
 		r.client,
 		preventionSettings,
 		plan.ID.ValueString(),
-		updatePreventionPolicyOptions{Description: flex.FrameworkToStringPointer(plan.Description)},
+		updatePreventionPolicyOptions{Description: plan.Description.ValueString()},
 	)
 
 	resp.Diagnostics.Append(diags...)

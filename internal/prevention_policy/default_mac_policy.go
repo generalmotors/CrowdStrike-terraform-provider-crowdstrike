@@ -8,7 +8,6 @@ import (
 	"github.com/crowdstrike/gofalcon/falcon/client"
 	"github.com/crowdstrike/gofalcon/falcon/models"
 	"github.com/crowdstrike/terraform-provider-crowdstrike/internal/config"
-	"github.com/crowdstrike/terraform-provider-crowdstrike/internal/framework/flex"
 	fwvalidators "github.com/crowdstrike/terraform-provider-crowdstrike/internal/framework/validators"
 	ioarulegroup "github.com/crowdstrike/terraform-provider-crowdstrike/internal/ioa_rule_group"
 	"github.com/crowdstrike/terraform-provider-crowdstrike/internal/utils"
@@ -68,7 +67,9 @@ func (m *defaultPreventionPolicyMacResourceModel) wrap(
 ) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	m.Description = flex.StringPointerToFramework(policy.Description)
+	if *policy.Description != "" {
+		m.Description = types.StringValue(*policy.Description)
+	}
 	diags.Append(m.assignPreventionSettings(ctx, policy.PreventionSettings)...)
 	ruleGroupSet, diag := ioarulegroup.ConvertIOARuleGroupToSet(ctx, policy.IoaRuleGroups)
 	diags.Append(diag...)
@@ -331,7 +332,7 @@ func (r *defaultPreventionPolicyMacResource) Create(
 		r.client,
 		preventionSettings,
 		plan.ID.ValueString(),
-		updatePreventionPolicyOptions{Description: flex.FrameworkToStringPointer(plan.Description)},
+		updatePreventionPolicyOptions{Description: plan.Description.ValueString()},
 	)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -398,7 +399,7 @@ func (r *defaultPreventionPolicyMacResource) Update(
 		r.client,
 		preventionSettings,
 		plan.ID.ValueString(),
-		updatePreventionPolicyOptions{Description: flex.FrameworkToStringPointer(plan.Description)},
+		updatePreventionPolicyOptions{Description: plan.Description.ValueString()},
 	)
 
 	resp.Diagnostics.Append(diags...)
