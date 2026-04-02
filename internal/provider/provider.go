@@ -24,6 +24,7 @@ import (
 	itautomation "github.com/crowdstrike/terraform-provider-crowdstrike/internal/it_automation"
 	preventionpolicy "github.com/crowdstrike/terraform-provider-crowdstrike/internal/prevention_policy"
 	responsepolicy "github.com/crowdstrike/terraform-provider-crowdstrike/internal/response_policy"
+	rtr "github.com/crowdstrike/terraform-provider-crowdstrike/internal/rtr"
 	sensorupdatepolicy "github.com/crowdstrike/terraform-provider-crowdstrike/internal/sensor_update_policy"
 	sensorvisibilityexclusion "github.com/crowdstrike/terraform-provider-crowdstrike/internal/sensor_visibility_exclusion"
 	"github.com/crowdstrike/terraform-provider-crowdstrike/internal/testconfig"
@@ -305,6 +306,7 @@ func (p *CrowdStrikeProvider) Resources(ctx context.Context) []func() resource.R
 		itautomation.NewItAutomationDefaultPolicyResource,
 		itautomation.NewItAutomationPolicyPrecedenceResource,
 		cloudsecurity.NewCloudSecurityCustomRuleResource,
+		cloudsecurity.NewCloudSecurityIomCustomRuleResource,
 		cloudsecurity.NewCloudSecurityKacPolicyResource,
 		cloudsecurity.NewCloudSecurityKacPolicyPrecedenceResource,
 		cloudsecurity.NewCloudSecurityKacCustomRuleResource,
@@ -318,6 +320,7 @@ func (p *CrowdStrikeProvider) Resources(ctx context.Context) []func() resource.R
 		ioarulegroup.NewIOARuleGroupResource,
 		usergroup.NewUserGroupResource,
 		installtoken.NewInstallTokenResource,
+		rtr.NewRtrPutFileResource,
 	}
 }
 
