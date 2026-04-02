@@ -16,6 +16,7 @@ import (
 	ioarulegroup "github.com/crowdstrike/terraform-provider-crowdstrike/internal/ioa_rule_group"
 	itautomation "github.com/crowdstrike/terraform-provider-crowdstrike/internal/it_automation"
 	preventionpolicy "github.com/crowdstrike/terraform-provider-crowdstrike/internal/prevention_policy"
+	"github.com/crowdstrike/terraform-provider-crowdstrike/internal/rtr"
 	sensorupdatepolicy "github.com/crowdstrike/terraform-provider-crowdstrike/internal/sensor_update_policy"
 	sensorvisibilityexclusion "github.com/crowdstrike/terraform-provider-crowdstrike/internal/sensor_visibility_exclusion"
 	usergroup "github.com/crowdstrike/terraform-provider-crowdstrike/internal/user_group"
@@ -43,5 +44,6 @@ func registerSweepers() {
 	cloudgroup.RegisterSweepers()
 	cloudsecurity.RegisterSweepers()
 	itautomation.RegisterSweepers()
+	rtr.RegisterSweepers()
 	usergroup.RegisterSweepers()
 }
